@@ -1,0 +1,38 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">IOT</string>
+    <string name="correo">Correo</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="login">LOGIN</string>
+    <string name="CrearProyecto">Crear Proyecto</string>
+    <string name="ingresausuario">Ingresa Usuario</string>
+    <string name="IngresaNombreProyecto">Ingresa Nombre</string>
+    <string name="DescripcionProyecto">Ingresa Descripcion</string>
+    <string name="FechaLimiteProyecto">Ingresa Fecha Limite</string>
+    <string name="ingresacorreo">Ingresa Correo</string>
+    <string name="ingresecontra">Ingresa Contraseña</string>
+    <string name="reingresacontra">Reingresa Contraseña</string>
+    <string name="registrate">REGISTRATE</string>
+    <string name="crearcuenta">Crear Cuenta</string>
+
+    <string name="listaProyectos">Lista de Proyectos</string>
+    <string name="editarProyecto">Editar Proyecto</string>
+
+    <string name="btnLogin">LOGIN</string>
+    <string name="btnCrearProyecto">Crear Proyecto</string>
+    <string name="btnCrearTarea">Crear Tarea</string>
+    <string name="btnRegistrar">REGISTRAR</string>
+
+    //FILTROS PROYECTOS
+    <string name="hoy">HOY</string>
+    <string name="manana">MAÑANA</string>
+    <string name="terminados">TERMINADOS</string>
+    //FILTROS TAREAS
+    <string name="activas">ACTIVAS</string>
+    <string name="finalizadas">FINALIZADAS</string>
+
+    <string name="editar">Editar</string>
+
+    <string name="Fechalímite">Fecha límite</string>
+    <string name="Guardarcambios">Guardar cambios</string>
+    <string name="editarTarea">EDITAR TAREA</string>
+</resources>
