@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="sw_estado_tarea" type="id">estado_tarea</item>
+    <item name="estado_tarea" type="id"/>
 </resources>

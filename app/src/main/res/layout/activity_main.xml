@@ -33,7 +33,7 @@
         app:srcCompat="@drawable/logo_iot" />
 
     <EditText
-        android:id="@+id/correo"
+        android:id="@+id/usernameField"
         android:layout_width="226dp"
         android:layout_height="44dp"
         android:layout_marginTop="16dp"
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.576" />
 
     <EditText
-        android:id="@+id/contrasenia"
+        android:id="@+id/passwordField"
         android:layout_width="224dp"
         android:layout_height="44dp"
         android:ems="10"

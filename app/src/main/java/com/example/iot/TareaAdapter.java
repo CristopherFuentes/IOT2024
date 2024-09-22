@@ -1,17 +1,18 @@
 package com.example.iot;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,13 +20,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHolder> {
-    private List<Tarea> tareaList;
-    private Context context;
-    private String proyectoId;
-    private static final int EDITAR_TAREA_REQUEST_CODE = 1001;  // Puedes cambiar el valor si lo deseas
+    private final List<Tarea> tareaList;
+    private final TareaFragment context; // Mantén el contexto como TareaFragment
+    private final String proyectoId;
+    private static final int EDITAR_TAREA_REQUEST_CODE = 1001;
 
-
-    public TareaAdapter(List<Tarea> tareaList, Context context, String proyectoId) {
+    public TareaAdapter(List<Tarea> tareaList, TareaFragment context, String proyectoId) {
         this.tareaList = tareaList;
         this.context = context;
         this.proyectoId = proyectoId;
@@ -38,69 +38,103 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         return new TareaViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
+        // Aquí enlazas los datos con las vistas
         Tarea tarea = tareaList.get(position);
+        holder.tvNombre.setText(tarea.getNombre());
+        holder.tvDescripcion.setText(tarea.getDescripcion());
 
-        // Setear nombre y descripción de la tarea
-        holder.nombreTextView.setText(tarea.getNombre());
-        holder.descripcionTextView.setText(tarea.getDescripcion());
+        // Controlar el estado del Switch
+        String estadoTexto = tarea.getEstado() ? "Activa" : "Completada";
+        holder.estadoTextView.setText(estadoTexto);
+        holder.swEstadoTarea.setChecked(tarea.getEstado());
 
-        // Botón para editar la tarea
         holder.btnEditar.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EditarTarea.class);
-            intent.putExtra("tareaId", tarea.getId()); // Pasar el ID de la tarea
+            Intent intent = new Intent(context.requireActivity(), EditarTarea.class); // Usa requireActivity()
+            intent.putExtra("tareaId", tarea.getId());
+            intent.putExtra("proyectoId", proyectoId);
             intent.putExtra("nombreTarea", tarea.getNombre());
             intent.putExtra("descripcionTarea", tarea.getDescripcion());
             intent.putExtra("estadoTarea", tarea.getEstado());
-            ((AppCompatActivity) context).startActivityForResult(intent, EDITAR_TAREA_REQUEST_CODE);
+            context.startActivityForResult(intent, EDITAR_TAREA_REQUEST_CODE); // Usa el contexto del fragmento
         });
 
-        // Botón para eliminar la tarea
         holder.btnEliminar.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Estás seguro de que deseas eliminar esta tarea?")
-                    .setPositiveButton("SI", (dialog, which) -> {
-                        eliminarTarea(tarea.getId(), holder.getAdapterPosition());
-                    })
-                    .setNegativeButton("NO", (dialog, which) -> dialog.dismiss())
-                    .create()
+            new AlertDialog.Builder(context.requireActivity())
+                    .setTitle("Eliminar tarea")
+                    .setMessage("¿Estás seguro de que deseas eliminar esta tarea?")
+                    .setPositiveButton("Eliminar", (dialog, which) -> eliminarTarea(tarea.getId(), position))
+                    .setNegativeButton("Cancelar", null)
                     .show();
         });
-    }
 
-    // Método para eliminar una tarea de Firebase
-    private void eliminarTarea(String tareaId, int position) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Proyectos").document(proyectoId).collection("Tareas").document(tareaId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    tareaList.remove(position);  // Eliminar de la lista local
-                    notifyItemRemoved(position);  // Notificar al adaptador
-                    Toast.makeText(context, "Tarea eliminada", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error al eliminar la tarea", Toast.LENGTH_SHORT).show();
-                });
-    }
+        holder.swEstadoTarea.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+            // Actualizar el estado de la tarea en Firestore
+            db.collection("Proyectos").document(proyectoId)
+                    .collection("Tareas").document(tarea.getId())
+                    .update("estado", isChecked)
+                    .addOnSuccessListener(aVoid -> {
+                        // Cambiar el texto según el estado
+                        holder.estadoTextView.setText(isChecked ? "Activa" : "Completada");
+
+                        // Verificar que se ha guardado en Firebase
+                        Log.d("TareaAdapter", "Estado de la tarea actualizado en Firebase: " + isChecked);
+
+                        // Actualizar el estado de la tarea en la lista sin removerla
+                        tarea.setEstado(isChecked);
+
+                        // Refrescar el RecyclerView para que muestre la tarea en el estado correcto
+                        notifyDataSetChanged();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Si falla, revertir el estado del Switch
+                        holder.swEstadoTarea.setChecked(!isChecked);
+                        Toast.makeText(context.requireActivity(), "Error al actualizar estado", Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+
+    }
 
     @Override
     public int getItemCount() {
         return tareaList.size();
     }
 
-    public static class TareaViewHolder extends RecyclerView.ViewHolder {
-        TextView nombreTextView, descripcionTextView, estadoTextView;
-        ImageButton btnEditar, btnEliminar;
+    private void eliminarTarea(String tareaId, int position) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Proyectos").document(proyectoId)
+                .collection("Tareas").document(tareaId)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(context.requireActivity(), "Tarea eliminada", Toast.LENGTH_SHORT).show();
+                    tareaList.remove(position);
+                    notifyItemRemoved(position);
+                })
+                .addOnFailureListener(e -> Toast.makeText(context.requireActivity(), "Error al eliminar tarea", Toast.LENGTH_SHORT).show());
+    }
+
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    static class TareaViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNombre, tvDescripcion, estadoTextView;
+        Switch swEstadoTarea;
+        ImageButton btnEliminar;
+        ImageButton btnEditar;
 
         public TareaViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombreTextView = itemView.findViewById(R.id.tv_nombre_tarea);
-            descripcionTextView = itemView.findViewById(R.id.tv_descripcion_tarea);
+            tvNombre = itemView.findViewById(R.id.tv_nombre_tarea);
+            tvDescripcion = itemView.findViewById(R.id.tv_descripcion_tarea);
             estadoTextView = itemView.findViewById(R.id.tv_estado_tarea);
-            btnEditar = itemView.findViewById(R.id.btn_editar_tarea);  // ImageButton Editar
-            btnEliminar = itemView.findViewById(R.id.btn_eliminar_tarea);  // ImageButton Eliminar
+            swEstadoTarea = itemView.findViewById(R.id.sw_estado_tarea);
+            btnEliminar = itemView.findViewById(R.id.btn_eliminar_tarea);
+            btnEditar = itemView.findViewById(R.id.btn_editar_tarea);
         }
     }
+
+
 }

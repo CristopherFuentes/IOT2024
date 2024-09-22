@@ -1,4 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <string name="app_name">IOT</string>
     <string name="correo">Correo</string>
     <string name="contrasenia">Contraseña</string>
@@ -22,17 +23,35 @@
     <string name="btnCrearTarea">Crear Tarea</string>
     <string name="btnRegistrar">REGISTRAR</string>
 
-    //FILTROS PROYECTOS
-    <string name="hoy">HOY</string>
-    <string name="manana">MAÑANA</string>
+    <!-- FILTROS PROYECTOS -->
+    <string name="hoy">EN EJECUCION</string>
+    <string name="manana">POR VENCER</string>
     <string name="terminados">TERMINADOS</string>
-    //FILTROS TAREAS
+
+    <!-- FILTROS TAREAS -->
     <string name="activas">ACTIVAS</string>
-    <string name="finalizadas">FINALIZADAS</string>
+    <string name="completadas">COMPLETADAS</string>
 
     <string name="editar">Editar</string>
 
     <string name="Fechalímite">Fecha límite</string>
     <string name="Guardarcambios">Guardar cambios</string>
     <string name="editarTarea">EDITAR TAREA</string>
+    <string name="nombre_de_la_tarea">Nombre de la tarea</string>
+    <string name="descripci_n_de_la_tarea">Descripción de la tarea</string>
+    <string name="guardar_tarea">Guardar tarea</string>
+    <string name="nombre">Nombre</string>
+    <string name="descripcion">Descripción</string>
+    <string name="fechalimite">Fecha Límite</string>
+    <string name="guardar">Guardar</string>
+    <string name="nombretarea">Nombre de la tarea</string>
+    <string name="estado_completada_activa">Estado (Completada/Activa)</string>
+    <string name="guardar_cambios">Guardar cambios</string>
+    <string name="nombre_del_proyecto">Nombre del Proyecto</string>
+    <string name="descripci_n_del_proyecto">Descripción del Proyecto</string>
+    <string name="crear_tarea">Crear Tarea</string>
+    <string name="estado_tarea">ESTADO TAREA</string>
+    <string name="tareas_0">Tareas: 0</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

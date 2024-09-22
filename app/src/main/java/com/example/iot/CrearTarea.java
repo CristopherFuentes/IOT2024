@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CrearTarea extends AppCompatActivity {
 
     private EditText etNombreTarea, etDescripcionTarea;
@@ -46,27 +49,33 @@ public class CrearTarea extends AppCompatActivity {
     private void guardarTarea() {
         String nombre = etNombreTarea.getText().toString();
         String descripcion = etDescripcionTarea.getText().toString();
-        String estado = "activa"; // Estado predeterminado
+        boolean estado = true; // Estado predeterminado: activa
 
         if (nombre.isEmpty() || descripcion.isEmpty()) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear un nuevo documento en la colección de tareas
-        Tarea nuevaTarea = new Tarea(null, nombre, descripcion, estado); // ID se asignará después
+        // Crear un nuevo HashMap para la tarea
+        Map<String, Object> tarea = new HashMap<>();
+        tarea.put("nombre", nombre);
+        tarea.put("descripcion", descripcion);
+        tarea.put("estado", estado); // Estado predeterminado
 
+        // Guardar en la colección "Tareas" dentro del documento del proyecto
         db.collection("Proyectos").document(proyectoId).collection("Tareas")
-                .add(nuevaTarea)
+                .add(tarea)
                 .addOnSuccessListener(documentReference -> {
-                    // Actualizar la tarea con el ID asignado por Firestore
-                    nuevaTarea.setId(documentReference.getId());
-                    documentReference.set(nuevaTarea)
+                    String tareaId = documentReference.getId();
+                    db.collection("Proyectos").document(proyectoId)
+                            .collection("Tareas").document(tareaId)
+                            .update("id", tareaId)
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(CrearTarea.this, "Tarea creada exitosamente", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK); // Establecer el resultado
                                 finish(); // Volver a la actividad anterior
                             })
-                            .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al crear la tarea", Toast.LENGTH_SHORT).show());
+                            .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al actualizar el ID de la tarea", Toast.LENGTH_SHORT).show());
                 })
                 .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al crear la tarea", Toast.LENGTH_SHORT).show());
     }

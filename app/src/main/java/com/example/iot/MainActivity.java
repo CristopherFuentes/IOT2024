@@ -6,42 +6,63 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseFirestore db;
+    private EditText usernameField, passwordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        db = FirebaseFirestore.getInstance();
+
+        usernameField = findViewById(R.id.usernameField);
+        passwordField = findViewById(R.id.passwordField);
     }
 
-    public void login(View v){
+    public void login(View v) {
+        String username = usernameField.getText().toString();
+        String password = passwordField.getText().toString();
 
-        EditText campo1 = this.findViewById(R.id.correo);
-        String correo = campo1.getText().toString();
-        EditText campo2 = this.findViewById(R.id.contrasenia);
-        String contrasenia = campo2.getText().toString();
-
-        if(correo.equals("cris") && contrasenia.equals("12345")){
-            Intent i = new Intent(this, Principal.class);
-            startActivity(i);
-        }else{
-            Toast.makeText(this, "Error en las crendeciales", Toast.LENGTH_SHORT).show();
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Ingrese nombre de usuario y contraseña", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Buscar el usuario en Firestore
+        db.collection("usuarios").document(username)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Verificar si la contraseña es correcta
+                            String storedPassword = document.getString("password");
+                            if (storedPassword.equals(password)) {
+                                Intent i = new Intent(MainActivity.this, Principal.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(MainActivity.this, "El usuario no existe", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-    public void crearCuenta(View v){
-        Intent i = new Intent(this,Registrar.class);
+
+    public void crearCuenta(View v) {
+        Intent i = new Intent(MainActivity.this, Registrar.class);
         startActivity(i);
     }
 }

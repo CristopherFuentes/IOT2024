@@ -5,16 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/bottombartarea"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar4"
         android:layout_width="415dp"
@@ -33,21 +23,21 @@
         android:id="@+id/tv_nombre_proyecto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre del Proyecto"
+        android:text="@string/nombre_del_proyecto"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.215" />
 
     <TextView
         android:id="@+id/tv_descripcion_proyecto"
         android:layout_width="369dp"
         android:layout_height="55dp"
-        android:text="Descripción del Proyecto"
+        android:text="@string/descripci_n_del_proyecto"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,28 +46,40 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.294" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_tareas"
-        android:layout_width="365dp"
-        android:layout_height="388dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.425"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778" />
-
     <Button
         android:id="@+id/btn_crear_tarea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Crear Tarea"
+        android:text="@string/crear_tarea"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/materialToolbar4"
+        app:layout_constraintVertical_bias="0.074" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerTareas"
+        android:layout_width="364dp"
+        android:layout_height="368dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintVertical_bias="0.693" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

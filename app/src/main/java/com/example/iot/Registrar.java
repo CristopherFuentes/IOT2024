@@ -3,37 +3,65 @@ package com.example.iot;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registrar extends AppCompatActivity {
+
+    private FirebaseFirestore db;
+    private EditText usernameField, passwordField, confirmPasswordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registrar);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-    }
-    public void cuentaCrear(View v){
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
-    public void crearTarea(View v){
-        Intent i = new Intent(this, CrearTarea.class);
-        startActivity(i);
+
+        db = FirebaseFirestore.getInstance();
+
+        usernameField = findViewById(R.id.usernameField);
+        passwordField = findViewById(R.id.passwordField);
+        confirmPasswordField = findViewById(R.id.confirmPasswordField);
     }
 
-    public void volverPrincipal(View v){
-        Intent i = new Intent(this, Principal.class);
-        startActivity(i);
+    public void cuentaCrear(View v) {
+        String username = usernameField.getText().toString();
+        String password = passwordField.getText().toString();
+        String confirmPassword = confirmPasswordField.getText().toString();
+
+        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Crear un mapa con los datos del usuario
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("username", username);
+        userData.put("password", password);  // En producción, asegúrate de encriptar las contraseñas
+
+        // Guardar el usuario en Firestore
+        db.collection("usuarios")
+                .document(username)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(Registrar.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Registrar.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Registrar.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+                });
     }
 }
