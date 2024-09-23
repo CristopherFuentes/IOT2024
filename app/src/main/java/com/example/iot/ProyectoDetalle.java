@@ -2,6 +2,7 @@ package com.example.iot;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,5 +94,10 @@ public class ProyectoDetalle extends AppCompatActivity {
             TareaFragment fragment = (TareaFragment) adapter.getItem(viewPager.getCurrentItem());
             fragment.obtenerTareas();
         }
+    }
+
+    public void VOLVEEEEER(View v){
+        Intent i = new Intent(this, Principal.class);
+        startActivity(i);
     }
 }

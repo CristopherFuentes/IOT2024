@@ -2,6 +2,7 @@ package com.example.iot;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -78,5 +79,10 @@ public class CrearTarea extends AppCompatActivity {
                             .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al actualizar el ID de la tarea", Toast.LENGTH_SHORT).show());
                 })
                 .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al crear la tarea", Toast.LENGTH_SHORT).show());
+    }
+
+    public void CT(View v){
+        Intent i = new Intent(this, ProyectoDetalle.class);
+        startActivity(i);
     }
 }

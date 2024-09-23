@@ -41,16 +41,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="51dp"
-        android:layout_height="50dp"
-        android:adjustViewBounds="true"
-        android:background="#2196F3"
-        android:src="@drawable/usuario1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/materialToolbar2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

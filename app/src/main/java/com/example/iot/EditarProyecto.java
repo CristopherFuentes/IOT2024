@@ -120,6 +120,10 @@ public class EditarProyecto extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         etFechaLimite.setText(sdf.format(myCalendar.getTime()));
     }
+    public void volverp(View v){
+        Intent i = new Intent(this, ProyectoDetalle.class);
+        startActivity(i);
+    }
 }
 
 
