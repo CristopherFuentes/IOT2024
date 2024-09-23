@@ -81,8 +81,5 @@ public class CrearTarea extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(CrearTarea.this, "Error al crear la tarea", Toast.LENGTH_SHORT).show());
     }
 
-    public void CT(View v){
-        Intent i = new Intent(this, ProyectoDetalle.class);
-        startActivity(i);
-    }
+
 }
