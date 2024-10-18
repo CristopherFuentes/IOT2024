@@ -25,5 +25,5 @@ public class DetalleProyectoFragment extends Fragment {
         }
     }
 
-    // Resto de la implementación de DetalleProyectoFragment
+
 }

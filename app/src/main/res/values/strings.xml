@@ -34,7 +34,7 @@
 
     <string name="editar">Editar</string>
 
-    <string name="Fechalímite">Fecha límite</string>
+    <string name="Fechalímite">Fecha límite:</string>
     <string name="Guardarcambios">Guardar cambios</string>
     <string name="editarTarea">EDITAR TAREA</string>
     <string name="nombre_de_la_tarea">Nombre de la tarea</string>
@@ -42,12 +42,12 @@
     <string name="guardar_tarea">Guardar tarea</string>
     <string name="nombre">Nombre</string>
     <string name="descripcion">Descripción</string>
-    <string name="fechalimite">Fecha Límite</string>
+    <string name="fechalimite">Fecha Límite:</string>
     <string name="guardar">Guardar</string>
     <string name="nombretarea">Nombre de la tarea</string>
     <string name="estado_completada_activa">Estado (Completada/Activa)</string>
     <string name="guardar_cambios">Guardar cambios</string>
-    <string name="nombre_del_proyecto">Nombre del Proyecto</string>
+    <string name="nombre_del_proyecto">Nombre del Proyecto:</string>
     <string name="descripci_n_del_proyecto">Descripción del Proyecto</string>
     <string name="crear_tarea">Crear Tarea</string>
     <string name="estado_tarea">ESTADO TAREA</string>

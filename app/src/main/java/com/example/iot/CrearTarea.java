@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class CrearTarea extends AppCompatActivity {
         etNombreTarea = findViewById(R.id.et_nombre_tarea);
         etDescripcionTarea = findViewById(R.id.et_descripcion_tarea);
         btnGuardarTarea = findViewById(R.id.btn_guardar_tarea);
+        ImageButton btnVolver = findViewById(R.id.btn_volver);
 
         db = FirebaseFirestore.getInstance();
 
@@ -42,6 +44,15 @@ public class CrearTarea extends AppCompatActivity {
             finish();
             return;
         }
+
+
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         // Configurar el botón de guardar
         btnGuardarTarea.setOnClickListener(v -> guardarTarea());

@@ -1,9 +1,13 @@
 package com.example.iot;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View; // Asegúrate de tener esta importación
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private EditText usernameField, passwordField;
+    private ImageView showPasswordButton;
+    private boolean isPasswordVisible = false;  // Estado de visibilidad de la contraseña
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +32,32 @@ public class MainActivity extends AppCompatActivity {
 
         usernameField = findViewById(R.id.usernameField);
         passwordField = findViewById(R.id.passwordField);
+        showPasswordButton = findViewById(R.id.showPasswordButton);
+
+        // Configuración inicial: la contraseña está oculta y el icono es de ojo cerrado
+        passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        showPasswordButton.setImageResource(R.drawable.ic_eye_off);
+        isPasswordVisible = false;
+
+        // Configuración del botón para mostrar u ocultar la contraseña
+        showPasswordButton.setOnClickListener(v -> togglePasswordVisibility(v));
+    }
+
+    public void togglePasswordVisibility(View view) {
+        if (isPasswordVisible) {
+            // Si la contraseña es visible, la ocultamos y cambiamos el icono a ojo cerrado
+            passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.ic_eye_off);
+            isPasswordVisible = false;
+        } else {
+            // Si la contraseña está oculta, la mostramos y cambiamos el icono a ojo abierto
+            passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            showPasswordButton.setImageResource(R.drawable.ic_eye);
+            isPasswordVisible = true;
+        }
+
+        // Mover el cursor al final del texto
+        passwordField.setSelection(passwordField.getText().length());
     }
 
     public void login(View v) {

@@ -25,15 +25,15 @@
 
     <TextView
         android:id="@+id/tv_nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="104dp"
+        android:layout_height="20dp"
         android:text="@string/nombre_del_proyecto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.566"
+        app:layout_constraintHorizontal_bias="0.629"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <TextView
         android:id="@+id/tv_fecha_limite"
@@ -42,10 +42,10 @@
         android:text="@string/fechalimite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintHorizontal_bias="0.327"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672" />
+        app:layout_constraintVertical_bias="0.639" />
 
     <TextView
         android:id="@+id/tv_cantidad_tareas"
@@ -84,7 +84,7 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="108dp"
+        android:layout_width="82dp"
         android:layout_height="20dp"
         android:text="@string/Fechalímite"
         app:layout_constraintBottom_toBottomOf="parent"
